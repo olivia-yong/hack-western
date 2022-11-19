@@ -1,3 +1,7 @@
+# cd into HandTrackingProject folder
+# run this command: python .\HandTrackingMinimum.py
+# ctrl + c to terminate
+
 import cv2
 import mediapipe as mp
 import time

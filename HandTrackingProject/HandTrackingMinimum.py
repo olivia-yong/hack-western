@@ -2,11 +2,18 @@
 # run this command: python .\HandTrackingMinimum.py
 # ctrl + c to terminate
 
+# library pill. specify dimensions. search jpeg to text
+
+import serial
+serialPort = serial.Serial(port = "COM3", baudrate=19200, timeout=2)
+serialString = ""
+serialPort.flushInput()
+
 import cv2
 import mediapipe as mp
 import time
 
-capture = cv2.VideoCapture(0);
+capture = cv2.VideoCapture(0)
 
 fingerSens = 0
 
@@ -42,12 +49,26 @@ id8y = 0
 id4x = 0
 id4y = 0
 
-# prevX = 0
-# prevY = 0
+flexValue = 0
+
+prevX = 0
+prevY = 0
 
 fingerCoordinates = []
+circleSize = []
 
 while True:  # infinite loop
+    if (serialPort.in_waiting > 0):
+        serialString = str(serialPort.read(2)) + "!!!!!!!!"
+        if len(serialString) == 17:
+            #flexValue = int(serialString[6])*10 + int(serialString[7])
+            flexValue = serialString[6] + serialString[7];
+            flexValue = int(flexValue, 16)
+        else:
+            flexValue = ord(serialString[4])
+        print(flexValue)
+        serialPort.flushInput()
+
     success, img = capture.read()  # creates image from videocam
     # print(img.shape[0], img.shape[1]);              # height: 480, width: 640
     # img = cv2.resize(img, (640*2, 480*2))          # increase size of video
@@ -64,26 +85,29 @@ while True:  # infinite loop
                 cx, cy = int(lm.x * w), int(lm.y * h)
                 # print(str(id) + ":", cx, cy)
 
-                if id == 4:
+                if id == 12:
                     id4x = cx
                     id4y = cy
-                    # cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
+                    #cv2.circle(img, (cx, cy), 5, (0, 255, 0), cv2.FILLED)
 
                 if id == 8:
                     id8x = cx
                     id8y = cy
-                    cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
+                    cv2.circle(img, (cx, cy), 5, (0, 0, 255), cv2.FILLED)
 
                 # mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
-        if ((abs(id4x - id8x)) < fingerSens) and (abs(id4y - id8y) < fingerSens):
+        #if ((abs(id4x - id8x)) < fingerSens) and (abs(id4y - id8y) < fingerSens):
+            #fingerCoordinates.append([id8x, id8y])
+        if flexValue > 20:
             fingerCoordinates.append([id8x, id8y])
+            circleSize.append(int(flexValue/20))
 
-    for i in fingerCoordinates:
-        # cv2.line(img, (i[0], i[1]), (prevX, prevY), (255, 0, 0), 2);   #testing with lines
-        # prevX = i[0];
-        # prevY = i[1];
-        cv2.circle(img, (i[0], i[1]), 2, (255, 0, 0), cv2.FILLED)
+    for i in range(len(fingerCoordinates)):
+        cv2.line(img, (fingerCoordinates[i][0], fingerCoordinates[i][1]), (prevX, prevY), (255, 0, 0), circleSize[i])   #testing with lines
+        prevX = fingerCoordinates[i][0]
+        prevY = fingerCoordinates[i][1]
+        #cv2.circle(img, (fingerCoordinates[i][0], fingerCoordinates[i][1]), circleSize[i], (255, 0, 0), cv2.FILLED)
 
     # fps calculation:
     cTime = time.time()

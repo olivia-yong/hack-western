@@ -91,4 +91,4 @@ while True:  # infinite loop
 
     cv2.imshow("Image", img)  # creates window
     cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
-    cv2.waitKey(1)  # shows video
+    cv2.waitKey(1)  #shows video

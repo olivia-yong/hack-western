@@ -24,7 +24,7 @@ def make_480p():
     capture.set(4, 480)
     fingerSens = 20
 
-make_720p()  # change resolution
+make_480p()  # change resolution
 
 mpHands = mp.solutions.hands
 hands = mpHands.Hands()  # uses default parameters

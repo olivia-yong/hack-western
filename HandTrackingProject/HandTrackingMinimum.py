@@ -146,7 +146,7 @@ while True:  # infinite loop
                 if id == 8:
                     id8x = cx
                     id8y = cy
-                    cv2.circle(img, (cx, cy), 5, (0, 0, 255), cv2.FILLED)
+                    cv2.circle(img, (cx, cy), 5, (255, 255, 0), cv2.FILLED)
 
                 if id == 12:
                     id12x = cx
@@ -162,7 +162,7 @@ while True:  # infinite loop
 
                 # mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
-        if ((abs(id4x - id16x)) < 15) and (abs(id4y - id16y) < 15):
+        if ((abs(id4x - id16x)) < 30) and (abs(id4y - id16y) < 30) and erase:
             #fingerCoordinates.append([id8x, id8y])
             if len(textFromImage) > 0:
                 textFromImage = textFromImage[:-1]
@@ -171,7 +171,7 @@ while True:  # infinite loop
             cv2.imwrite('screenshotMask.jpg', mask)
             cv2.imwrite('screenshotRGB.jpg', img)
             cv2.imwrite("screenshotHSV.jpg", imgHSV)
-            time.sleep(0.1)
+            time.sleep(0.2)
             textFromImage = textFromImage + ' ' + detectText(FILE_PATH)
             textFromImage = re.sub(r'[^a-zA-Z]', '', textFromImage)
 
@@ -184,7 +184,7 @@ while True:  # infinite loop
 
         if flexValueIndex > 20:
             pts.append((id8x, id8y))
-            circleSize.append(int(flexValueIndex/10))
+            circleSize.append(int(flexValueIndex/8))
 
     cv2.putText(img, textFromImage, (100, 300), cv2.FONT_HERSHEY_PLAIN,
                 3, (0, 0, 0), 3)

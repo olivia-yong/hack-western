@@ -13,7 +13,6 @@ import cv2
 import mediapipe as mp
 import time
 import numpy as np
-import mouse
 
 capture = cv2.VideoCapture(0)
 
@@ -23,7 +22,7 @@ def make_1080p():
     global fingerSens
     capture.set(3, 1920)
     capture.set(4, 1080)
-    fingerSens = 50
+    fingerSens = 30
 
 def make_720p():
     global fingerSens
@@ -106,6 +105,7 @@ while True:  # infinite loop
 
     if erase and len(pts) > 0:
         pts.pop()
+        circleSize.pop()
 
     if results.multi_hand_landmarks:
         for handLms in results.multi_hand_landmarks:
@@ -138,6 +138,10 @@ while True:  # infinite loop
             cv2.imwrite('screenshotMask.jpg', mask)
             cv2.imwrite('screenshotRGB.jpg', img)
             cv2.imwrite("screenshotHSV.jpg", imgHSV)
+            time.sleep(0.1)
+            pts.clear()
+            circleSize.clear()
+
         if flexValueIndex > 20:
             pts.append((id8x, id8y))
             circleSize.append(int(flexValueIndex/10))
@@ -148,8 +152,8 @@ while True:  # infinite loop
     upperBlue = np.array([200, 200, 255])
     mask = cv2.inRange(imgHSV, lowerBlue, upperBlue)
     result = cv2.bitwise_and(imgRGB, imgRGB, mask=mask)
-    cv2.imshow('HSV', imgHSV)
-    cv2.imshow('mask', mask)
+    #cv2.imshow('HSV', imgHSV)
+    #cv2.imshow('mask', mask)
 
     # fps calculation:
     cTime = time.time()

@@ -102,11 +102,12 @@ while True:  # infinite loop
     # #print(flexValue)
     # serialPort.flushInput()
 
-    success, img = capture.read()  # creates image from videocam
+    success, img = capture.read()  # creates image from video-cam
     # print(img.shape[0], img.shape[1]);              # height: 480, width: 640
     # img = cv2.resize(img, (640*2, 480*2))          # increase size of video
     img = cv2.flip(img, 1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
     results = hands.process(imgRGB)  # processing hand detection
     # print(results.multi_hand_landmarks)
 
@@ -142,10 +143,21 @@ while True:  # infinite loop
             pts.append([id8x, id8y])
 
         if ((abs(id4x - id20x)) < fingerSens) and (abs(id4y - id20y) < fingerSens):
-            cv2.imwrite('screenshot.jpg', img)
+            cv2.imwrite('screenshotMask.jpg', mask)
+            cv2.imwrite('screenshotRGB.jpg', img)
+            cv2.imwrite("screenshotHSV.jpg", imgHSV)
         # if flexValueIndex > 20:
         # pts.append((id8x, id8y))
         # circleSize.append(int(flexValueIndex/10))
+
+    # Image Processing
+    imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    lowerBlue = np.array([0, 0, 0])
+    upperBlue = np.array([200,200, 255])
+    mask = cv2.inRange(imgHSV, lowerBlue, upperBlue)
+    result = cv2.bitwise_and(imgRGB, imgRGB, mask=mask)
+    cv2.imshow('HSV', imgHSV)
+    cv2.imshow('mask', mask)
 
     # fps calculation:
     cTime = time.time()
@@ -158,3 +170,5 @@ while True:  # infinite loop
     cv2.imshow("Image", img)  # creates window
     cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
     cv2.waitKey(1)  # shows video
+
+

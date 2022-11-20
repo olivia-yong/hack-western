@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="61493ce8-387b-4462-9f7a-23e764177eff" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/HandTrackingProject/output.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HandTrackingProject/HandTrackingMinimum.py" beforeDir="false" afterPath="$PROJECT_DIR$/HandTrackingProject/HandTrackingMinimum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HandTrackingProject/screenshot.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/HandTrackingProject/screenshot.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HandTrackingProject/app.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HandTrackingProject/screenshot.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HandTrackingProject/templates/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HandTrackingProject/templates/index.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -5,7 +5,7 @@
 # library pill. specify dimensions. search jpeg to text
 
 import serial
-serialPort = serial.Serial(port = "COM3", baudrate=19200, timeout=2)
+serialPort = serial.Serial(port="COM3", baudrate=19200, timeout=2)
 serialString = ""
 serialPort.flushInput()
 

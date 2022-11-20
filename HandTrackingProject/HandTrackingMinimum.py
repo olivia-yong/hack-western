@@ -118,8 +118,6 @@ while True:  # infinite loop
         serialPort.flushInput()
 
     success, img = capture.read()  # creates image from videocam
-    # print(img.shape[0], img.shape[1]);              # height: 480, width: 640
-    # img = cv2.resize(img, (640*2, 480*2))          # increase size of video
     img = cv2.flip(img, 1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = hands.process(imgRGB)  # processing hand detection
@@ -150,25 +148,32 @@ while True:  # infinite loop
                     id8y = cy
                     cv2.circle(img, (cx, cy), 5, (0, 0, 255), cv2.FILLED)
 
+                if id == 12:
+                    id12x = cx
+                    id12y = cy
+
+                if id == 16:
+                    id16x = cx
+                    id16y = cy
+
                 if id == 20:
                     id20x = cx
                     id20y = cy
 
                 # mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
-        #if ((abs(id4x - id8x)) < fingerSens) and (abs(id4y - id8y) < fingerSens):
+        if ((abs(id4x - id16x)) < 15) and (abs(id4y - id16y) < 15):
             #fingerCoordinates.append([id8x, id8y])
+            if len(textFromImage) > 0:
+                textFromImage = textFromImage[:-1]
 
         if ((abs(id4x - id20x)) < fingerSens) and (abs(id4y - id20y) < fingerSens):
             cv2.imwrite('screenshotMask.jpg', mask)
             cv2.imwrite('screenshotRGB.jpg', img)
             cv2.imwrite("screenshotHSV.jpg", imgHSV)
             time.sleep(0.1)
-            textFromImage = ''
-            print("The file says:")
-            textFromImage = detectText(FILE_PATH)
+            textFromImage = textFromImage + ' ' + detectText(FILE_PATH)
             textFromImage = re.sub(r'[^a-zA-Z]', '', textFromImage)
-            print(textFromImage)
 
             myOutputFile = open("output.txt", "w")
             myOutputFile.write(textFromImage)

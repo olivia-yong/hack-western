@@ -14,6 +14,7 @@ import cv2
 import mediapipe as mp
 import time
 import numpy as np
+import pyttsx3
 
 import os, io
 from google.cloud import vision_v1
@@ -25,7 +26,7 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'ServiceAccountToken.json'
 client = vision_v1.ImageAnnotatorClient()
 
 capture = cv2.VideoCapture(0)
-
+TTS = True
 fingerSens = 0
 
 def make_1080p():
@@ -48,7 +49,7 @@ def make_480p():
 
 make_1080p()  # change resolution
 
-def detectText(img):
+def detectText(img):                                    # detects text in an image
     with io.open(img, 'rb') as image_file:
         content = image_file.read()
 
@@ -175,9 +176,10 @@ while True:  # infinite loop
             textFromImage = textFromImage + ' ' + detectText(FILE_PATH)
             textFromImage = re.sub(r'[^a-zA-Z]', '', textFromImage)
 
-            myOutputFile = open("output.txt", "w")
-            myOutputFile.write(textFromImage)
-            myOutputFile.close()
+            if TTS:
+                text_to_speech = pyttsx3.init()
+                text_to_speech.say(textFromImage)
+                text_to_speech.runAndWait()
 
             pts.clear()
             circleSize.clear()

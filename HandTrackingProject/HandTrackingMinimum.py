@@ -52,18 +52,27 @@ id8x = 0
 id8y = 0
 id4x = 0
 id4y = 0
+id20x = 0
+id20y = 0
 
 flexValue = 0
 
 prevX = 0
 prevY = 0
 
+<<<<<<< Updated upstream
 fingerCoordinates = []
 circleSize = []
+=======
+erase = False
+
+time.sleep(0.5)
+>>>>>>> Stashed changes
 
 while True:  # infinite loop
 <<<<<<< Updated upstream
     if (serialPort.in_waiting > 0):
+<<<<<<< Updated upstream
         serialString = str(serialPort.read(2)) + "!!!!!!!!"
         if len(serialString) == 17:
             #flexValue = int(serialString[6])*10 + int(serialString[7])
@@ -113,6 +122,35 @@ while True:  # infinite loop
         # #print(flexValue)
         # serialPort.flushInput()
 >>>>>>> Stashed changes
+=======
+        serialString = str(serialPort.read(2))
+        serialString = serialString[2:-1]
+        print(serialString)
+
+        if serialString[0] == chr(92):
+            if serialString[1] == 'x':
+                flexValueIndex = serialString[2] + serialString[3]
+                flexValueIndex = int(flexValueIndex, 16)
+            elif serialString[1] == 't':
+                flexValueIndex = int(9)
+            elif serialString[1] == 'n':
+                flexValueIndex = int(10)
+            elif serialString[1] == 'r':
+                flexValueIndex = int(13)
+            else:
+                flexValueIndex = int(92)
+        else:
+            flexValueIndex = ord(serialString[0])
+
+        if serialString[-1] == 'e':
+            erase = True
+        else:
+            erase = False
+        #if serialString[-5] == chr(92):
+        #print(serialString[-5])
+        #print(flexValueIndex)
+        serialPort.flushInput()
+>>>>>>> Stashed changes
 
     success, img = capture.read()  # creates image from videocam
     # print(img.shape[0], img.shape[1]);              # height: 480, width: 640
@@ -123,8 +161,15 @@ while True:  # infinite loop
     # print(results.multi_hand_landmarks)
 
     for i in range(len(pts)):
+<<<<<<< Updated upstream
         #cv2.circle(img, pts[i], circleSize[i], (255, 0, 0), -1)
         cv2.circle(img, pts[i], 10, (255, 0, 0), -1)
+=======
+        cv2.circle(img, pts[i], circleSize[i], (255, 0, 0), -1)
+
+    if erase and len(pts) > 0:
+        pts.pop()
+>>>>>>> Stashed changes
 
     if results.multi_hand_landmarks:
         for handLms in results.multi_hand_landmarks:
@@ -145,6 +190,13 @@ while True:  # infinite loop
                     cv2.circle(img, (cx, cy), 5, (0, 0, 255), cv2.FILLED)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+                if id == 20:
+                    id20x = cx
+                    id20y = cy
+
+>>>>>>> Stashed changes
                 # mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
         #if ((abs(id4x - id8x)) < fingerSens) and (abs(id4y - id8y) < fingerSens):
@@ -163,6 +215,7 @@ while True:  # infinite loop
                     id20x = cx
                     id20y = cy
 
+<<<<<<< Updated upstream
                 # mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
         if ((abs(id4x - id8x)) < fingerSens) and (abs(id4y - id8y) < fingerSens):
@@ -176,6 +229,24 @@ while True:  # infinite loop
 
 
 
+>>>>>>> Stashed changes
+=======
+        if ((abs(id4x - id20x)) < fingerSens) and (abs(id4y - id20y) < fingerSens):
+            cv2.imwrite('screenshotMask.jpg', mask)
+            cv2.imwrite('screenshotRGB.jpg', img)
+            cv2.imwrite("screenshotHSV.jpg", imgHSV)
+        if flexValueIndex > 20:
+            pts.append((id8x, id8y))
+            circleSize.append(int(flexValueIndex/10))
+
+    # Image Processing
+    imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    lowerBlue = np.array([0, 0, 0])
+    upperBlue = np.array([200, 200, 255])
+    mask = cv2.inRange(imgHSV, lowerBlue, upperBlue)
+    result = cv2.bitwise_and(imgRGB, imgRGB, mask=mask)
+    cv2.imshow('HSV', imgHSV)
+    cv2.imshow('mask', mask)
 >>>>>>> Stashed changes
 
     # fps calculation:

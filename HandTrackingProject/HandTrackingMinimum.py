@@ -3,9 +3,10 @@
 # ctrl + c to terminate
 
 # library pill. specify dimensions. search jpeg to text
+#imageName = "screenshotMask.jpg"
 
 import serial
-serialPort = serial.Serial(port = "COM3", baudrate=19200, timeout=2)
+serialPort = serial.Serial(port="COM3", baudrate=19200, timeout=2)
 serialString = ""
 serialPort.flushInput()
 
@@ -13,6 +14,13 @@ import cv2
 import mediapipe as mp
 import time
 import numpy as np
+
+import os, io
+from google.cloud import vision_v1
+from google.cloud.vision_v1 import types
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'ServiceAccountToken.json'
+client = vision_v1.ImageAnnotatorClient()
 
 capture = cv2.VideoCapture(0)
 
@@ -37,6 +45,20 @@ def make_480p():
     fingerSens = 20
 
 make_1080p()  # change resolution
+
+def detectText(img):
+
+    with io.open(img, 'rb') as image_file:
+        content = image_file.read()
+
+    image = vision_v1.types.Image(content=content)
+    response = client.text_detection(image=image)
+    docText = response.full_text_annotation.text
+    return docText
+
+FOLDER_PATH = r'C:\Users\xande\OneDrive\Documents\GitHub\hack-western\HandTrackingProject'
+IMAGE_FILE = 'screenshotMask.jpg'
+FILE_PATH = os.path.join(FOLDER_PATH, IMAGE_FILE)
 
 mpHands = mp.solutions.hands
 hands = mpHands.Hands()  # uses default parameters
@@ -66,7 +88,7 @@ while True:  # infinite loop
     if (serialPort.in_waiting > 0):
         serialString = str(serialPort.read(2))
         serialString = serialString[2:-1]
-        print(serialString)
+        #print(serialString)
 
         if serialString[0] == chr(92):
             if serialString[1] == 'x':
@@ -139,6 +161,7 @@ while True:  # infinite loop
             cv2.imwrite('screenshotRGB.jpg', img)
             cv2.imwrite("screenshotHSV.jpg", imgHSV)
             time.sleep(0.1)
+            print(detectText(FILE_PATH))
             pts.clear()
             circleSize.clear()
 

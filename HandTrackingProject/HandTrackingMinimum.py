@@ -19,6 +19,8 @@ import os, io
 from google.cloud import vision_v1
 from google.cloud.vision_v1 import types
 
+import re
+
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'ServiceAccountToken.json'
 client = vision_v1.ImageAnnotatorClient()
 
@@ -47,7 +49,6 @@ def make_480p():
 make_1080p()  # change resolution
 
 def detectText(img):
-
     with io.open(img, 'rb') as image_file:
         content = image_file.read()
 
@@ -81,6 +82,8 @@ pts = []
 circleSize = []
 
 erase = False
+
+textFromImage = ''
 
 time.sleep(0.5)
 
@@ -161,13 +164,25 @@ while True:  # infinite loop
             cv2.imwrite('screenshotRGB.jpg', img)
             cv2.imwrite("screenshotHSV.jpg", imgHSV)
             time.sleep(0.1)
-            print(detectText(FILE_PATH))
+            textFromImage = ''
+            print("The file says:")
+            textFromImage = detectText(FILE_PATH)
+            textFromImage = re.sub(r'[^a-zA-Z]', '', textFromImage)
+            print(textFromImage)
+
+            myOutputFile = open("output.txt", "w")
+            myOutputFile.write(textFromImage)
+            myOutputFile.close()
+
             pts.clear()
             circleSize.clear()
 
         if flexValueIndex > 20:
             pts.append((id8x, id8y))
             circleSize.append(int(flexValueIndex/10))
+
+    cv2.putText(img, textFromImage, (100, 300), cv2.FONT_HERSHEY_PLAIN,
+                3, (0, 0, 0), 3)
 
     # Image Processing
     imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)

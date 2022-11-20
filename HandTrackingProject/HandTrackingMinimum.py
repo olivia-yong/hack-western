@@ -5,13 +5,17 @@
 # library pill. specify dimensions. search jpeg to text
 
 import serial
-serialPort = serial.Serial(port = "COM3", baudrate=19200, timeout=2)
-serialString = ""
-serialPort.flushInput()
+#serialPort = serial.Serial(port = "COM3", baudrate=19200, timeout=2)
+#serialString = ""
+#serialPort.flushInput()
 
 import cv2
 import mediapipe as mp
 import time
+<<<<<<< Updated upstream
+=======
+import numpy as np
+>>>>>>> Stashed changes
 
 capture = cv2.VideoCapture(0)
 
@@ -58,6 +62,7 @@ fingerCoordinates = []
 circleSize = []
 
 while True:  # infinite loop
+<<<<<<< Updated upstream
     if (serialPort.in_waiting > 0):
         serialString = str(serialPort.read(2)) + "!!!!!!!!"
         if len(serialString) == 17:
@@ -68,6 +73,46 @@ while True:  # infinite loop
             flexValue = ord(serialString[4])
         print(flexValue)
         serialPort.flushInput()
+=======
+    #if (serialPort.in_waiting > 0):
+        #serialString = str(serialPort.read(2))
+        #serialString = serialString[2:]
+        #print(serialString)
+        #print(serialString[4])
+        # if len(serialString) == 15:
+        #     if serialString[3] == 'n':
+        #         # takes the hex value in the serial string and combines them into one string
+        #         flexValue = serialString[6] + serialString[7]
+        #     else:
+        #         flexValue = serialString[4] + serialString[5]
+        #     # takes the string with integers and converts to an actual integer:
+        #     flexValue = int(flexValue, 16)
+        # elif len(serialString) == 13 and not serialString[3] == chr(92):
+        #     character = serialString[2] + serialString[3]
+        #     flexValue = ord(character)
+        # else:
+        #     flexValue = ord(serialString[2])
+
+        # if serialString[0] == chr(92):
+        #     if serialString[1] == 'x':
+        #         flexValueIndex = serialString[2] + serialString[3]
+        #         flexValueIndex = int(flexValueIndex, 16)
+        #     elif serialString[1] == 't':
+        #         flexValueIndex = int(9)
+        #     elif serialString[1] == 'n':
+        #         flexValueIndex = int(10)
+        #     elif serialString[1] == 'r':
+        #         flexValueIndex = int(13)
+        #     else:
+        #         flexValueIndex = int(92)
+        # else:
+        #     flexValueIndex = ord(serialString[0])
+        #
+        # #if serialString[-5] == chr(92):
+        # print(serialString[-5])
+        # #print(flexValue)
+        # serialPort.flushInput()
+>>>>>>> Stashed changes
 
     success, img = capture.read()  # creates image from videocam
     # print(img.shape[0], img.shape[1]);              # height: 480, width: 640
@@ -76,6 +121,10 @@ while True:  # infinite loop
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = hands.process(imgRGB)  # processing hand detection
     # print(results.multi_hand_landmarks)
+
+    for i in range(len(pts)):
+        #cv2.circle(img, pts[i], circleSize[i], (255, 0, 0), -1)
+        cv2.circle(img, pts[i], 10, (255, 0, 0), -1)
 
     if results.multi_hand_landmarks:
         for handLms in results.multi_hand_landmarks:
@@ -95,6 +144,7 @@ while True:  # infinite loop
                     id8y = cy
                     cv2.circle(img, (cx, cy), 5, (0, 0, 255), cv2.FILLED)
 
+<<<<<<< Updated upstream
                 # mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
         #if ((abs(id4x - id8x)) < fingerSens) and (abs(id4y - id8y) < fingerSens):
@@ -108,6 +158,25 @@ while True:  # infinite loop
         prevX = fingerCoordinates[i][0]
         prevY = fingerCoordinates[i][1]
         #cv2.circle(img, (fingerCoordinates[i][0], fingerCoordinates[i][1]), circleSize[i], (255, 0, 0), cv2.FILLED)
+=======
+                if id == 20:
+                    id20x = cx
+                    id20y = cy
+
+                # mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
+
+        if ((abs(id4x - id8x)) < fingerSens) and (abs(id4y - id8y) < fingerSens):
+            pts.append([id8x, id8y])
+
+        if ((abs(id4x - id20x)) < fingerSens) and (abs(id4y - id20y) < fingerSens):
+            cv2.imwrite('screenshot.jpg', img)
+        #if flexValueIndex > 20:
+            #pts.append((id8x, id8y))
+            #circleSize.append(int(flexValueIndex/10))
+
+
+
+>>>>>>> Stashed changes
 
     # fps calculation:
     cTime = time.time()

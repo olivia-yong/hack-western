@@ -29,4 +29,16 @@ In the short term, we would like to develop shape recognition. This is similar t
 
 In the long term, we want to integrate our software into web-conferencing applications like Zoom. We initially tried to do this using WebRTC, something we were unfamiliar with, but the Zoom SDK had many complexities that were beyond our scope of knowledge and exceeded the amount of time we could spend on this stage.
 
+## What we built with
+- Python
+- OpenCV
+- Arduino nano
+- Adobe Illustrator
+- Mediapipe
+- Google Cloud Vision API
+- Flask
+- Text to Speech (TTS)
+
 ### [HoverTouch Website] (hoverpoggers.tech)
+
+

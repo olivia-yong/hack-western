@@ -1,4 +1,6 @@
 # hack-western
+<img width="230" alt="image" src="https://user-images.githubusercontent.com/116043965/202909316-37b397d2-aa64-45d1-b670-0325ebe3d21c.png">
+
 
 ## Inspiration
 Ever wish you didn’t need to purchase a stylus to handwrite your digital notes? Each person at some point hasn’t had the free hands to touch their keyboard. Whether you are a student learning to type or a parent juggling many tasks, sometimes a keyboard and stylus are not accessible. We believe the future of technology won’t even need to touch anything in order to take notes. HyperTouch utilizes touchless drawings and converts your (finger)written notes to typed text! We also have a text to speech function that is Google adjacent.

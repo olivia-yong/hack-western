@@ -3,7 +3,7 @@
 
 
 ## Inspiration
-Ever wish you didn’t need to purchase a stylus to handwrite your digital notes? Each person at some point hasn’t had the free hands to touch their keyboard. Whether you are a student learning to type or a parent juggling many tasks, sometimes a keyboard and stylus are not accessible. We believe the future of technology won’t even need to touch anything in order to take notes. HyperTouch utilizes touchless drawings and converts your (finger)written notes to typed text! We also have a text to speech function that is Google adjacent.
+Ever wish you didn’t need to purchase a stylus to handwrite your digital notes? Each person at some point hasn’t had the free hands to touch their keyboard. Whether you are a student learning to type or a parent juggling many tasks, sometimes a keyboard and stylus are not accessible. We believe the future of technology won’t even need to touch anything in order to take notes. HoverTouch utilizes touchless drawings and converts your (finger)written notes to typed text! We also have a text to speech function that is Google adjacent.
 
 ## What it does
 Using your index finger as a touchless stylus, you can write new words and undo previous strokes, similar to features on popular note-taking apps like Goodnotes and OneNote. As a result, users can eat a slice of pizza or hold another device in hand while achieving their goal. HyperTouch tackles efficiency, convenience, and retention all in one.  
